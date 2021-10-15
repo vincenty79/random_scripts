@@ -1,0 +1,1 @@
+rsync -Phrtv --delete /mnt/e/Guild\ Wars/ root@192.168.1.7:/mnt/Primary_Storage/MyStuff/Game_Backup/Guild\\\ Wars/
