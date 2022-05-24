@@ -1,10 +1,13 @@
 /*
 About
+
 move/resize your active window with a simple keyboard shortcut
 currently only works when all monitors report positive numbers to SysGet (i.e. primary monitor must be Mon1 with Mon2 sitting to the right of it)
+
 Requirements:
 install autohotkey - http://www.autohotkey.com/
 numlock = ON
+
 Instructions:
 Left Control + NumpadX to align on your left monitor
 Left Alt + NumpadX to align on your right monitor
@@ -17,8 +20,10 @@ For NumpadX, X is assigned as such
  1 = lower left quarter
  3 = lower right quarter
  2 = center with current height and width
+
 Script author: Nick Lowery
 https://github.com/cnlowery/autohotkey/blob/master/DualMonitorWindowPlacement.ahk
+
 ResizeWin method by - http://www.howtogeek.com/howto/28663/create-a-hotkey-to-resize-windows-to-a-specific-size-with-autohotkey/
 */
 ;****************************************************************
@@ -72,7 +77,25 @@ SecondaryHalfPosition := (Right2-Right1)//2+Right1
 
 ;END Monitor Variables
 ;****************************************************************
+
+;maximize
++Up::
+WinMaximize, A
+return
+
+;restore
++Down::
+WinRestore, A
+return
+
 ;START primary monitor window placement
+
+;Custom Quarter Center
+LCtrl & Down::
+ResizeWin(PrimaryResizeQuarterWidth,PrimaryResizeQuarterHeight)
+WinGetPos,,, Width, Height, A
+Winmove, A,, (A_ScreenWidth/2)-(Width/2), (Bottom1-Height)//2
+return
 
 ;Center window
 LCtrl & Numpad2::
@@ -82,18 +105,19 @@ return
 
 ;Full Screen
 LCtrl & Up::
+LCtrl & Numpad5::
 Winmove, A,, Left1, Top1
 ResizeWin(Right1,Bottom1)
 return
 
 ;Left Tall
-LCtrl & Left::
+LCtrl & Numpad4::
 Winmove, A,, Left1, Top1
 ResizeWin(PrimaryResizeHalfWidth,PrimaryResizeHalfHeight)
 return
 
 ;Right Tall
-LCtrl & Right::
+LCtrl & Numpad6::
 Winmove, A,, PrimaryMiddleWidth, Top1
 ResizeWin(PrimaryResizeHalfWidth,PrimaryResizeHalfHeight)
 return
@@ -126,6 +150,13 @@ return
 ;****************************************************************
 ;START secondary monitor window placement
 
+;Custom Quarter Center
+LAlt & Down::
+ResizeWin(SecondaryHalfWidth,SecondaryHalfHeight)
+WinGetPos,,, Width, Height, A
+Winmove, A,, Right1+((Right2-Right1)-Width)//2,(Bottom2-Height)//2
+return
+
 ;Center window
 LAlt & Numpad2::
 WinGetPos,,, Width, Height, A
@@ -134,18 +165,19 @@ return
 
 ;Full Screen
 LAlt & Up::
+LAlt & Numpad5::
 Winmove, A,, Left2, Top2
 ResizeWin(SecondaryFullWidth,Bottom2)
 return
 
 ;Left Tall
-LAlt & Left::
+LAlt & Numpad4::
 Winmove, A,, Left2, Top2
 ResizeWin(SecondaryHalfWidth,Bottom2)
 return
 
 ;Right Tall
-LAlt & Right::
+LAlt & Numpad6::
 Winmove, A,, SecondaryHalfPosition, Top2
 ResizeWin(SecondaryHalfWidth,Bottom2)
 return

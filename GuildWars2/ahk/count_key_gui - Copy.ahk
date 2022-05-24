@@ -1,53 +1,26 @@
-;pgup : increase count
-;pgdn : decrease count
-;home : moves to character
-;insert : selects the character
-;f12 : character selection
-;+pause (shift+pause) : selects tool and starts gathering
-;^CtrlBreak (ctrl+pause) : moves mouse back to where the tool was, then +pause again
-;insert : logs out character
-;!pause (alt+pause) : end script
-
-
-
 #MaxThreadsPerHotkey 1
 #Persistent
 #IfWinActive, ahk_exe Gw2-64.exe
 SetWorkingDir %A_ScriptDir%
 #Include %A_ScriptDir%\Gdip_All.ahk
-
-
-
-
 ; Array
-	arrPos := []
-	arrPos[1]:={x:215,y:1066}
-	arrPos[2]:={x:310,y:1066}
-	arrPos[3]:={x:405,y:1066}
-	arrPos[4]:={x:500,y:1066}
-	arrPos[5]:={x:595,y:1066}
-	arrPos[6]:={x:690,y:1066}
-	arrPos[7]:={x:785,y:1066}
-	arrPos[8]:={x:880,y:1066}
-	arrPos[9]:={x:975,y:1066}
-	arrPos[10]:={x:1070,y:1066}
-	arrPos[11]:={x:1165,y:1066}
-	arrPos[12]:={x:1260,y:1066}
-	arrPos[13]:={x:1355,y:1066}
-	arrPos[14]:={x:1450,y:1066}
-	arrPos[15]:={x:1545,y:1066}
-	arrPos[16]:={x:1640,y:1066}
-	arrPos[17]:={x:1735,y:1066}
-  arrPos[98] := {x: 115 , y: 1066} ; back
-  arrPos[99] := {x: 1810, y: 1066} ; forward
+  arrPos := []
+  arrPos[1] := {x: 678, y: 1066}
+  arrPos[2] := {x: 773, y: 1066}
+  arrPos[3] := {x: 863, y: 1066}
+  arrPos[4] := {x: 960, y: 1066}
+  arrPos[5] := {x: 1055, y: 1066}
+  arrPos[6] := {x: 1150, y: 1066}
+  arrPos[7] := {x: 1243, y: 1066}
+  arrPos[98] := {x: 585 , y: 1066} ; back
+  arrPos[99] := {x: 1333, y: 1066} ; forward
 ;
-
 ; Variable
   toolaxe := 4500
   toolharvester := 2500
   toolsleep := toolaxe
-  MaxC := 34 ; max characters
-  Count :=34 ; set default position
+  MaxC := 27 ; max characters
+  Count := 26 ; set default position
   Screen := 1 ; 
   Gosub, CountScreen ; to get the corresponding position variable.
   
@@ -70,12 +43,6 @@ SetWorkingDir %A_ScriptDir%
   Gui, Show, AutoSize xCenter y0
   return
 ;
-; quick remap of key
-Up::i
-Down::LButton
-return
-;
-
 ; PgUp:: used to increase count of where the character is
   PgUp::
     KeyWait, PgUp  ;Wait for h to be released
@@ -141,8 +108,7 @@ return
   return
   }
 ;
-; +pause:: (shift+pause) G3, used to changed tool and start 
-	Right:: ;you can press del or +pause
+; +pause:: (shift+pause) G3, used to changed tool and start gathering
   +pause::  ; shift+pause hotkey.
     {
       KeyWait, shift
@@ -185,11 +151,10 @@ end::
   Return
 ;
 
-; !pause:: alt+pause Exits app
+; !pause:: shift+pause Exits app
 !pause::ExitApp
 
 ; ^CtrlBreak:: (ctrl+pause) G2,  ; move back mouse to where the last tool click was 9Pause or Ctrl+NumLock. While the Ctrl key is held down, the Pause key produces the key code of CtrlBreak and NumLock produces Pause, so use ^CtrlBreak in hotkeys instead of ^Pause.)
-	Left:: ; end or ^CtrlBreak  will do the same action
   ^CtrlBreak::
     {
         Gosub, RandomMouse
@@ -225,7 +190,7 @@ end::
 ; mousemovechangetoolback: Moves mouse back to where the tool was to change it back
   mousemovechangetoolback:
   {
-    ;Random, mymousemove, 10, 30
+    Random, mymousemove, 10, 30
     MouseMove, %MouseX%, %MouseY%, %mymousemove%
     sleep 50
     Gosub, mousex2click ; double click to change tool
@@ -235,11 +200,11 @@ end::
 ; movemousetochange: Subroutine, presses F12 to change character and presses
   movemousetochange:
   {
-    ;Random, mylogoutx, 895, 1010
-    ;Random, mylogouty, 640, 656
+    Random, mylogoutx, 895, 1010
+    Random, mylogouty, 640, 656
     Random, mymousemove, 5, 15
     send {F12}
-    MouseMove, 960, 650, %mymousemove%
+    MouseMove, %mylogoutx%, %mylogouty%, %mymousemove%
   }
   return
 ;
@@ -247,14 +212,14 @@ end::
 ; CountScreen: Subroutine for determining which screen character is in
   CountScreen:
   {
-  If Count >= 18
+  If Count >= 8
     {
       Countnew := Count
       ScreenX := 1
-      while Countnew >= 18
+      while Countnew >= 8
       {
         ScreenX := ScreenX + 1
-        Countnew := Countnew - 17
+        Countnew := Countnew - 7
       }
       Screen := ScreenX
       Position := Countnew
@@ -301,11 +266,11 @@ end::
 ; mousex2click: Subroutine to double click with random sleep in between
   mousex2click:
   {
-      ;#Random, clicksleep, 50, 75
-      ;#Click
-      ;#sleep %clicksleep%
-      ;#Click
-      Click, 3
+      Random, clicksleep, 50, 75
+      Click
+      sleep %clicksleep%
+      Click
+      
   }
   return
 ;
@@ -334,10 +299,10 @@ end::
 
 takescreen:
   pToken := Gdip_Startup()
-    x:=160
-    y:=1025
-    w:=1608
-    h:=95
+    x:=634
+    y:=1024
+    w:=654
+    h:=83
   pBitmap := Gdip_BitmapFromScreen(x "|" y "|" w "|" h)
   ;Gdip_SaveBitmapToFile(pBitmap, "Image.png")
   ;Gdip_SetBitmapToClipboard(pBitmap)

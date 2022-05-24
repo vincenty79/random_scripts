@@ -1,10 +1,13 @@
 /*
 About
+
 move/resize your active window with a simple keyboard shortcut
 currently only works when all monitors report positive numbers to SysGet (i.e. primary monitor must be Mon1 with Mon2 sitting to the right of it)
+
 Requirements:
 install autohotkey - http://www.autohotkey.com/
 numlock = ON
+
 Instructions:
 Left Control + NumpadX to align on your left monitor
 Left Alt + NumpadX to align on your right monitor
@@ -17,8 +20,10 @@ For NumpadX, X is assigned as such
  1 = lower left quarter
  3 = lower right quarter
  2 = center with current height and width
+
 Script author: Nick Lowery
 https://github.com/cnlowery/autohotkey/blob/master/DualMonitorWindowPlacement.ahk
+
 ResizeWin method by - http://www.howtogeek.com/howto/28663/create-a-hotkey-to-resize-windows-to-a-specific-size-with-autohotkey/
 */
 ;****************************************************************
@@ -60,7 +65,7 @@ ResizeWin(Width = 0,Height = 0)
 PrimaryResizeHalfHeight := Bottom1
 PrimaryResizeHalfWidth := Right1//2
 PrimaryResizeQuarterHeight := Bottom1//2
-PrimaryResizeQuarterWidth := Right1//2
+PrimaryResizeQuarterWidth := Right1//4
 PrimaryMiddleHeight := Bottom1//2
 PrimaryMiddleWidth := Right1//2
 
@@ -80,8 +85,21 @@ WinGetPos,,, Width, Height, A
 Winmove, A,, (A_ScreenWidth/2)-(Width/2), (Bottom1-Height)//2
 return
 
+;Center window with resize (CUSTOM)
+LCtrl & Down::
+Winmove, A,, (A_ScreenWidth/2)-(Width/2), (Bottom1-Height)//2
+WinGetPos,,, Width, Height, A
+ResizeWin(PrimaryResizeQuarterWidth,PrimaryResizeQuarterHeight)
+return
+
 ;Full Screen
 LCtrl & Numpad5::
+Winmove, A,, Left1, Top1
+ResizeWin(Right1,Bottom1)
+return
+
+;Full Screen (CUSTOM)
+LCtrl & UP::
 Winmove, A,, Left1, Top1
 ResizeWin(Right1,Bottom1)
 return
@@ -132,8 +150,21 @@ WinGetPos,,, Width, Height, A
 Winmove, A,, Right1+((Right2-Right1)-Width)//2,(Bottom2-Height)//2
 return
 
+;Center window with resize (CUSTOM)
+LAlt & Down::
+ResizeWin(SecondaryHalfWidth,SecondaryHalfHeight)
+WinGetPos,,, Width, Height, A
+Winmove, A,, Right1+((Right2-Right1)-Width)//2,(Bottom2-Height)//2
+return
+
 ;Full Screen
 LAlt & Numpad5::
+Winmove, A,, Left2, Top2
+ResizeWin(SecondaryFullWidth,Bottom2)
+return
+
+;Full Screen (CUSTOM)
+LAlt & Up::
 Winmove, A,, Left2, Top2
 ResizeWin(SecondaryFullWidth,Bottom2)
 return

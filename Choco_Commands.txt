@@ -1,0 +1,2 @@
+choco upgrade nvidia-display-driver --params "'/DCH'"
+choco upgrade 7zip.install

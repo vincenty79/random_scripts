@@ -1,0 +1,7 @@
+# use this to help with renamed files.
+#  --fuzzy --delay-updates --delete-delay
+rsync -rv --size-only /mnt/Primary_Storage/Media-Files/ /mnt/MD1200-A1/Media-Files/ --progress
+rsync -rv --size-only /mnt/Primary_Storage/MyBackup/ /mnt/MD1200-A1/MyBackup/ --progress
+rsync -rv --size-only /mnt/Primary_Storage/MyStuff/ /mnt/MD1200-A1/MyStuff/ --progress
+rsync -rv --size-only /mnt/Primary_Storage/Photos/ /mnt/MD1200-A1/Photos/ --progress
+rsync -rv --size-only /mnt/Primary_Storage/XVideos/ /mnt/MD1200-A1/XVideos/ --progress
